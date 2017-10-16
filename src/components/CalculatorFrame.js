@@ -24,16 +24,74 @@ class CalculatorFrame extends Component {
     const value = event.target.value; 
     switch (value) {
       case '=': { 
-        var temp = this.state.expression;
+        var temp = this.state.expression.trim();
         if(temp != ""){
-          var operations = "=*/-";
+          var operations = "+*/-";
+          console.log(temp + " after slice " + temp.slice(-1) + "asdfasdf");
           if(!operations.includes(temp.slice(-1))){
-
             var operands = temp.split(this.state.operator);
+            switch(this.state.operator){
+              case '*':{
+                API.doMultiplication(operands[0], operands[1])
+                .then((res) => {
+                    this.setState({
+                        expression: res.result,
+                        result: '',
+                        operator: ''
+                    });
+                  });
+                break;
+              }
+              case "+":{
+                console.log("adding");
+                API.doAddition(operands[0], operands[1])
+                .then((res) => {
+                    this.setState({
+                        expression: res.result,
+                        result: '',
+                        operator: ''
+                    });
+                  });
+                break;
+              }
+              case '-':{
+                API.doSubtraction(operands[0], operands[1])
+                .then((res) => {
+                    this.setState({
+                        expression: res.result,
+                        result: '',
+                        operator: ''
+                    });
+                  });
+                break;
+              }
+              case '/':{
+                API.doDivision(operands[0], operands[1])
+                .then((res) => {
+                    this.setState({
+                        expression: res.result,
+                        result: '',
+                        operator: ''
+                    });
+                  });
+                break;
+              }
+              default:
+                console.log("dont know");
+            }
 
-            API.evaluateExpression(operands[0], operands[1], this.state.operator);
-            const result = eval(this.state.expression).toString();
-            this.setState({ result });
+           /* API.evaluateExpression(operands[0], operands[1], this.state.operator)
+            .then((res) => {
+              this.setState({
+                  expression: res.result,
+                  result: '',
+                  operator: ''
+              });
+            });
+            */
+
+            //const result = eval(this.state.expression).toString();
+            //this.setState({ expression:result });
           }
         }
         break;
@@ -51,7 +109,7 @@ class CalculatorFrame extends Component {
           var count = temp.includes("+") || temp.includes("-") || temp.includes("*") || temp.includes("/");
           console.log(count + " " + temp);
           if(count === false)
-            this.setState({ expression: this.state.expression += ` ${value} `, operator: ` ${value} ` });
+            this.setState({ expression: this.state.expression += ` ${value} `, operator: `${value}` });
         }
         break;
       }
@@ -87,4 +145,4 @@ class CalculatorFrame extends Component {
   }
 }
 
-export default CalculatorFrame;
+export { CalculatorFrame };
