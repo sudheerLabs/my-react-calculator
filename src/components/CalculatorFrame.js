@@ -24,10 +24,11 @@ class CalculatorFrame extends Component {
     const value = event.target.value; 
     switch (value) {
       case '=': { 
-        var temp = this.state.expression.trim();
+        var temp = this.state.expression;
         if(temp != ""){
           var operations = "+*/-";
-          console.log(temp + " after slice " + temp.slice(-1) + "asdfasdf");
+          temp = temp.trim();
+          console.log(temp + " after slice " + temp.trim().slice(-1) + "asdfasdf");
           if(!operations.includes(temp.slice(-1))){
             var operands = temp.split(this.state.operator);
             switch(this.state.operator){
